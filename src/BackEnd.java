@@ -5,7 +5,6 @@ public class BackEnd
 {
 	private TreeMap<String, List<String>> messages;
 	
-	
 	public BackEnd()
 	{
 		messages = new TreeMap<String, List<String>>();
@@ -15,9 +14,20 @@ public class BackEnd
 	{
 		return messages.get(username);
 	}
-	public void addMessage(String username, String msg)
+	public String addMessage(String username, String msg)
 	{
+		if (messages.containsKey(username))
+		{
+			messages.get(username).add(msg);
+		}
+		else
+		{
+			List<String> msgList = new ArrayList<String>();
+			msgList.add(msg);
+			messages.put(username, msgList);
+		}
 		
+		return username + "\t" + msg;
 	}
 	
 	public List<String> getUsers()
