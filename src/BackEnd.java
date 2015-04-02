@@ -5,9 +5,10 @@ public class BackEnd
 {
 	private TreeMap<String, List<String>> messages;
 	
+	
 	public BackEnd()
 	{
-		
+		messages = new TreeMap<String, List<String>>();
 	}
 	
 	public List<String> getMessages(String username)
