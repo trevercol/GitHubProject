@@ -1,6 +1,9 @@
 import java.io.File;
+import java.util.*;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 
@@ -50,8 +53,16 @@ public class Encoder
 	}
 	public void write(String plaintext)
 	{
-		
-		
+		PrintWriter p;
+		try {
+			p = new PrintWriter(plaintext);
+			p.append(plaintext);
+			p.close();
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 	}
