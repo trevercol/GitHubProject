@@ -4,6 +4,7 @@ import java.util.*;
 public class BackEnd
 {
 	private TreeMap<String, List<String>> messages;
+	private String msgsForEncoder;
 	
 	public BackEnd()
 	{
@@ -14,11 +15,13 @@ public class BackEnd
 	{
 		return messages.get(username);
 	}
-	public String addMessage(String username, String msg)
+	public void addMessage(String username, String msg)
 	{
 		if (messages.containsKey(username))
 		{
-			messages.get(username).add(msg);
+			List<String> msgs = messages.get(username);
+			msgs.add(msg);
+			messages.put(username, msgs);
 		}
 		else
 		{
@@ -27,7 +30,7 @@ public class BackEnd
 			messages.put(username, msgList);
 		}
 		
-		return username + "\t" + msg;
+		msgsForEncoder += username + "\t" + msg +"\n";
 	}
 	
 	public List<String> getUsers()
@@ -39,5 +42,10 @@ public class BackEnd
 			keyList.add(x);
 		}
 		return keyList;
+	}
+	
+	public String getAll()
+	{
+		return msgsForEncoder;
 	}
 }
