@@ -56,7 +56,7 @@ public class Encoder
 		PrintWriter p;
 		try {
 			p = new PrintWriter(plaintext);
-			p.append(plaintext);
+			p.println(plaintext);
 			p.close();
 
 		} catch (FileNotFoundException e) {
