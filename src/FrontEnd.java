@@ -6,10 +6,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -17,15 +19,17 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-//JComboBox
+
 public class FrontEnd 
 {
 	public static final Font font = new Font("Comic Sans MS", Font.BOLD, 12);
 	
 	private JFrame myFrontEnd;
+	private BackEnd myBackEnd;
 	
 	public FrontEnd()
 	{
+		myBackEnd = new BackEnd();
 		myFrontEnd = new JFrame();
 		
 		final JFrame frame = new JFrame("Add or Get your Message");
@@ -45,10 +49,11 @@ public class FrontEnd
 		//setWordWrapStyle???
 		//JScrollPane scrollPane = new JScrollPane(results);
 		
+		vBox.add(Box.createVerticalStrut(50));
 		vBox.add(newMsgBox);
-		vBox.add(Box.createHorizontalStrut(42));
+		vBox.add(Box.createVerticalStrut(50));
 		vBox.add(getMsgBox);
-		vBox.add(Box.createVerticalStrut(42));
+		vBox.add(Box.createVerticalStrut(50));
 		vBox.add(returnMsg);
 		//vBox.add(scrollPane);
 		
@@ -60,6 +65,7 @@ public class FrontEnd
 		final JTextField newMessage = new JTextField();
 		//JButton addMsg = new JButton("Add Message");
 		final JButton addMsg = new JButton("Add Message");
+		JComboBox<String> comboUsername = new JComboBox<String>();
 		
 		newUsername.addKeyListener(new KeyListener() {
 
@@ -84,43 +90,66 @@ public class FrontEnd
 				
 			}} );
 		
+		newMessage.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				//JOptionPane.showMessageDialog(frame, arg0.getKeyCode());
+				if (arg0.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					addMsg.doClick();
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}} );
+		
 		newUsername.setFont(font);
-		newUsername.setForeground(Color.RED);
+		newUsername.setForeground(Color.BLACK);
 		newUsername.setBackground(Color.GREEN);
-		newUsername.setPreferredSize(new Dimension(300, 20));
+		newUsername.setPreferredSize(new Dimension(300, 5));
 		
 		newMessage.setFont(font);
-		newMessage.setForeground(Color.RED);
+		newMessage.setForeground(Color.BLACK);
 		newMessage.setBackground(Color.GREEN);
-		newMessage.setPreferredSize(new Dimension(300, 20));
+		newMessage.setPreferredSize(new Dimension(300, 5));
 		
-	/*	addMsg.addActionListener(new ActionListener() {
+		
+		
+		addMsg.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				String word = inputWord.getText();
-				List<String> defs = myDictionary.lookup(word);
 				
-				String s = results.getText();
 				
-				s += word + "\n";
-				s += "\n";
-				for (String def : defs)
+				
+				String getCombo = newUsername.getText();
+				List<String> check = myBackEnd.getUsers();
+				System.out.println(check);
+				if(!check.contains(getCombo))
 				{
-					s += "   " + def + "\n";
+					
+					comboUsername.addItem(getCombo);
 				}
-				s += "\n";
-				s += "\n";
+				myBackEnd.addMessage(newUsername.getText(), newMessage.getText());
 				
-				results.setText(s);				
-				
-			}} );	*/
+			}} );	
 		
 		newMsgBox.add(newUsername);
+		
 		newMsgBox.add(newMessage);
 		newMsgBox.add(addMsg);
-		newMsgBox.add(Box.createHorizontalStrut(100));
+		newMsgBox.add(Box.createHorizontalStrut(0));
 		
 		
 		//getMsgBox
@@ -129,51 +158,30 @@ public class FrontEnd
 		
 		getUsername.setFont(font);
 		getUsername.setForeground(Color.BLACK);
-		getUsername.setBackground(Color.ORANGE);
+		getUsername.setBackground(Color.RED);
 		getUsername.setPreferredSize(new Dimension(300, 10));
 		
-		getMsgBox.add(getUsername);
+		
+		
+		getMsgBox.add(comboUsername);
+		//getMsgBox.add(getUsername);
 		getMsgBox.add(getMsg);
-		getMsgBox.add(Box.createHorizontalStrut(10));
+		getMsgBox.add(Box.createHorizontalStrut(100));
 		
 		
-		/*//loadBox
-		JButton loadButton = new JButton("Load");
-		
-		loadBox.add(Box.createHorizontalStrut(500));
-		loadBox.add(loadButton);
 		
 		
-		loadButton.addActionListener(new ActionListener() {
+		
+		getMsg.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				//JOptionPane.showMessageDialog(null, "Loading...");
-				
-				JFileChooser chooser = new JFileChooser("../r ");
-				
-				int x = chooser.showOpenDialog(frame);
-				
-				if (x == JFileChooser.APPROVE_OPTION)
-				{
-					File theFile = chooser.getSelectedFile();
-					
-					String path = theFile.getPath();
-					String name = theFile.getName();
-					
-					//JOptionPane.showMessageDialog(frame, path);
-					//JOptionPane.showMessageDialog(frame, name);
-					
-					int n = myDictionary.load(path);
-					JOptionPane.showMessageDialog(frame, n + " words added to Dictionary.");
-				}
-			}
+			public void actionPerformed(ActionEvent e) 
+			{
+				List<String> getResults = myBackEnd.getMessages((String)comboUsername.getSelectedItem());
+				System.out.println(getResults);
+				returnMsg.setText(getResults.toString());
+			}} );
 			
-			
-			
-		} );	*/
-		
-		
 		frame.pack();
 		frame.setVisible(true);
 		
