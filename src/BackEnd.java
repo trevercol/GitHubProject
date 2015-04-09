@@ -5,12 +5,22 @@ public class BackEnd
 {
 	private TreeMap<String, List<String>> messages;
 	private String msgsForEncoder;
-	
+	private Encoder EEE;
 	public BackEnd()
 	{
 		messages = new TreeMap<String, List<String>>();
 	}
 	
+	/*public void idk()
+	{
+		String blah = "";
+		for(int i = 0;i<messages.size();i++)
+		{
+			blah = blah + "" +messages.get(i)+""+ messages.get(i).toString();
+		}
+		EEE.write(blah);
+	}
+	*/
 	public List<String> getMessages(String username)
 	{
 		return messages.get(username);
